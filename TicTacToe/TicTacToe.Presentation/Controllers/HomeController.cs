@@ -1,27 +1,27 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TicTacToe.Presentation.Models;
+using TicTacToe.Services.Computer.Contracts;
 
 namespace TicTacToe.Presentation.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<HomeController> logger;
+    private readonly IComputerService computerService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(
+        ILogger<HomeController> logger,
+        IComputerService computerService)
     {
-        _logger = logger;
+        this.logger = logger;
+        this.computerService = computerService;
     }
 
     [HttpGet("/")]
     public IActionResult Index()
-    {
-        return View();
-    }
-    
-    [HttpGet("computer")]
-    public IActionResult Computer()
     {
         return View();
     }
