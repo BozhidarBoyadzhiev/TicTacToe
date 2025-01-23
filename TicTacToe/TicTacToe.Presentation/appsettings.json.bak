@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=DESKTOP-3TQ2RKV\\SQLEXPRESS;Database=TicTacToeDB;Trusted_Connection=True;Encrypt=False;"
+    "DefaultConnection": "Server={server};Database={db};Trusted_Connection=True;Encrypt=False;"
   },
   "Logging": {
     "LogLevel": {
