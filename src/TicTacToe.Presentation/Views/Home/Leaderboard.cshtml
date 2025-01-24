@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model TicTacToe.Presentation.Models.ViewModels.LeaderboardViewModel
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1>Computer Mode Leaderboard</h1>
+        <p class="text-muted">Players are distinguished by name and color combination</p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary mb-2">
+            Back to Home
+        </a>
+
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Color</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Draws</th>
+                <th>Total</th>
+                <th>Win Rate</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{ int rank = 1; }
+            @foreach (var player in Model.PlayerStats)
+            {
+                <tr>
+                    <td>@(rank++)</td>
+                    <td>@player.PlayerName</td>
+                    <td>
+                            <span class="color-swatch"
+                                  style="background-color: @player.PlayerColor"></span>
+                        @player.PlayerColor
+                    </td>
+                    <td>@player.Wins</td>
+                    <td>@player.Losses</td>
+                    <td>@player.Draws</td>
+                    <td>@player.TotalGames</td>
+                    <td>@player.WinPercentage.ToString("0.0")%</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
