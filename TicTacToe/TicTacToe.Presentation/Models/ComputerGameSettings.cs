@@ -2,7 +2,7 @@
 
 namespace TicTacToe.Presentation.Models;
 
-public class GameSettings
+public class ComputerGameSettings
 {
     public string PlayerName { get; set; }
     public string PlayerColor { get; set; }

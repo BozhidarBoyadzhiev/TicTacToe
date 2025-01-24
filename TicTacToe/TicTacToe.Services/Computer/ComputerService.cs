@@ -6,84 +6,101 @@ namespace TicTacToe.Services.Computer;
 
 public class ComputerService : IComputerService
 {
-    private readonly int[][] _winningCombinations = 
+    private readonly int[][] winningCombinations = 
     {
-        new[] {0, 1, 2}, new[] {3, 4, 5}, new[] {6, 7, 8},
-        new[] {0, 3, 6}, new[] {1, 4, 7}, new[] {2, 5, 8},
-        new[] {0, 4, 8}, new[] {2, 4, 6}
+        new[] {0, 1, 2}, // Row 1
+        new[] {3, 4, 5}, // Row 2
+        new[] {6, 7, 8}, // Row 3
+        new[] {0, 3, 6}, // Column 1
+        new[] {1, 4, 7}, // Column 2
+        new[] {2, 5, 8}, // Column 3
+        new[] {0, 4, 8}, // Diagonal 1
+        new[] {2, 4, 6}  // Diagonal 2
     };
 
-    public GameState StartNewGame(string playerName, string playerColor, string playerSymbol)
+    public ComputerGameState StartNewGame(string playerName, string playerColor, string playerSymbol)
     {
-        return new GameState
+        return new ComputerGameState
         {
             PlayerName = playerName,
             PlayerColor = playerColor,
             PlayerSymbol = playerSymbol,
+            IsPlayerTurn = (playerSymbol == "X"), // Player starts if X, computer if O
             Board = new string[9],
-            IsPlayerTurn = playerSymbol == "X",
             IsGameOver = false
         };
     }
 
-    public (bool isValid, bool isGameOver, string winnerMessage, int? computerIndex, int[] winningCombination) 
-        ProcessMove(GameState gameState, int cellIndex)
+    public (
+        bool isValid, 
+        bool isGameOver, 
+        string winnerMessage, 
+        int? computerIndex, 
+        int[] winningCombination) 
+        ProcessMove(ComputerGameState computerGameState, int cellIndex)
     {
-        if (!IsMoveValid(gameState, cellIndex))
-            return (false, false, null, null, null)!;
-        
-        gameState.Board[cellIndex] = gameState.PlayerSymbol;
-        gameState.IsPlayerTurn = false;
+        // Validate move
+        if (!IsValidMove(computerGameState, cellIndex))
+            return (false, false, null, null, null);
 
-        var (gameOver, winner, combination) = CheckWinner(gameState.Board);
+        // Player's move
+        computerGameState.Board[cellIndex] = computerGameState.PlayerSymbol;
+        computerGameState.IsPlayerTurn = false;
+
+        // Check for player win
+        var (gameOver, winnerSymbol, combination) = CheckWinner(computerGameState.Board);
         if (gameOver)
-            return HandleGameResult(gameState, winner, combination);
+            return HandleGameResult(computerGameState, winnerSymbol, combination);
 
-        if (IsBoardFull(gameState.Board))
-            return (true, true, "Game Draw!", null, null)!;
+        // Check for draw
+        if (IsBoardFull(computerGameState.Board))
+            return (true, true, "Game Draw!", null, null);
 
+        // Computer's move (only if game isn't over)
+        int computerMove = GetComputerMove(computerGameState.Board);
+        computerGameState.Board[computerMove] = computerGameState.ComputerSymbol;
+        computerGameState.IsPlayerTurn = true;
 
-        var computerMove = GetComputerMove(gameState.Board);
-        gameState.Board[computerMove] = gameState.ComputerSymbol;
-        gameState.IsPlayerTurn = true;
-
-        (gameOver, winner, combination) = CheckWinner(gameState.Board);
-        return (gameOver 
-            ? HandleGameResult(gameState, winner, combination, computerMove) 
-            : (true, false, null, computerMove, null))!;
+        // Check for computer win
+        (gameOver, winnerSymbol, combination) = CheckWinner(computerGameState.Board);
+        return gameOver 
+            ? HandleGameResult(computerGameState, winnerSymbol, combination, computerMove) 
+            : (true, false, null, computerMove, null);
     }
     
-    public int? MakeInitialComputerMove(GameState gameState)
+    public int? MakeInitialComputerMove(ComputerGameState computerGameState)
     {
-        if (gameState.PlayerSymbol != "O") return null;
+        if (computerGameState.PlayerSymbol != "O") return null;
     
-        var computerMove = GetComputerMove(gameState.Board);
-        gameState.Board[computerMove] = gameState.PlayerSymbol;
-        gameState.IsPlayerTurn = true;
+        var computerMove = GetComputerMove(computerGameState.Board);
+        computerGameState.Board[computerMove] = computerGameState.PlayerSymbol;
+        computerGameState.IsPlayerTurn = true;
         return computerMove;
     }
     
     private (bool, bool, string, int?, int[]) HandleGameResult(
-        GameState state, 
-        string winner, 
+        ComputerGameState state, 
+        string winnerSymbol, 
         int[] combination, 
         int? computerMove = null)
     {
         state.IsGameOver = true;
-        var message = winner == state.PlayerSymbol 
+        string message = (winnerSymbol == state.PlayerSymbol) 
             ? $"{state.PlayerName} wins!" 
             : "Computer wins!";
         return (true, true, message, computerMove, combination);
     }
 
-    private bool IsMoveValid(GameState gameState, int cellIndex) => 
-        !gameState.IsGameOver && 
-        gameState.IsPlayerTurn && 
-        gameState.Board[cellIndex] == null;
-
-    private (bool, string, int[]) CheckWinner(string[] board)
+    private bool IsValidMove(ComputerGameState state, int cellIndex)
     {
-        foreach (var combo in _winningCombinations)
+        return cellIndex is >= 0 and <= 8 &&
+               !state.IsGameOver &&
+               (state.IsPlayerTurn && state.Board[cellIndex] == null);
+    }
+
+    private (bool isGameOver, string winnerSymbol, int[] combination) CheckWinner(string[] board)
+    {
+        foreach (var combo in this.winningCombinations)
         {
             if (!string.IsNullOrEmpty(board[combo[0]]) && 
                 board[combo[0]] == board[combo[1]] && 
@@ -92,17 +109,17 @@ public class ComputerService : IComputerService
                 return (true, board[combo[0]], combo);
             }
         }
-        return (false, null, null)!;
+        return (false, null, null);
     }
 
     private int GetComputerMove(string[] board)
     {
         var emptyCells = board.Select((cell, idx) => new { cell, idx })
-                            .Where(x => x.cell == null)
-                            .Select(x => x.idx)
-                            .ToList();
+            .Where(x => x.cell == null)
+            .Select(x => x.idx)
+            .ToList();
         return emptyCells[new Random().Next(emptyCells.Count)];
     }
 
-    private bool IsBoardFull(string[] board) => board.All(c => c != null);
+    private bool IsBoardFull(string[] board) => board.All(c => !string.IsNullOrEmpty(c));
 }

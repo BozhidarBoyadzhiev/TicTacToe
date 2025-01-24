@@ -66,14 +66,17 @@ Layout = "_Layout";
     <script>
         function startNewGame() {
             const modal = bootstrap.Modal.getInstance(document.getElementById('settingsModal'));
-            if (modal) modal.hide();
+            modal.hide();
 
             const playerName = document.getElementById('playerName').value;
             const playerColor = document.getElementById('playerColor').value;
             const playerSymbol = document.getElementById('playerSymbol').value;
 
-            // Clear the board immediately
-            resetBoard();
+            // Reset board visually
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.querySelector('span').innerHTML = '';
+                cell.classList.remove('win');
+            });
 
             fetch('/Computer/NewGame', {
                 method: 'POST',
@@ -84,29 +87,15 @@ Layout = "_Layout";
                     playerSymbol
                 })
             })
-                .then(response => {
-                    if (!response.ok) return response.json().then(err => { throw new Error(err.error) });
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
-                    // Handle computer first move if needed
-                    if (data.computerFirstMove !== null && data.computerFirstMove !== undefined) {
+                    // Handle computer's first move if player chose O
+                    if (data.computerFirstMove !== null) {
                         const computerCell = document.querySelector(`[data-index="${data.computerFirstMove}"]`);
-                        if (computerCell) {
-                            const computerSpan = computerCell.querySelector('span');
-                            if (computerSpan) {
-                                computerSpan.innerHTML = data.computerSymbol;
-                                computerSpan.style.color = '#0000ff';
-                            }
-                        }
+                        computerCell.querySelector('span').innerHTML = data.computerSymbol;
+                        computerCell.querySelector('span').style.color = '#0000ff';
                     }
-
-                    const gameStatus = document.getElementById('game-status');
-                    if (gameStatus) gameStatus.innerHTML = 'Game started!';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error starting game: ' + error.message);
+                    document.getElementById('game-status').innerHTML = 'Game started!';
                 });
         }
 
@@ -123,58 +112,42 @@ Layout = "_Layout";
     }
 
         function makeMove(cell) {
-            if (!cell) return;
-
             const index = cell.getAttribute('data-index');
-            if (index === null) return;
 
             fetch('/Computer/MakeMove', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ cellIndex: parseInt(index) })
             })
-                .then(response => {
-                    if (!response.ok) return response.json().then(err => { throw new Error(err.error) });
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.isValid) {
-                        // Update player move with dynamic symbol
-                        const playerSpan = cell.querySelector('span');
-                        if (playerSpan) {
-                            playerSpan.innerHTML = data.playerSymbol;
-                            playerSpan.style.color = data.playerColor;
-                        }
+                        // Update player's move
+                        cell.querySelector('span').innerHTML = data.playerSymbol;
+                        cell.querySelector('span').style.color = data.playerColor;
 
-                        // Update computer move with dynamic symbol
+                        // Update computer's move
                         if (data.computerIndex !== null) {
                             const computerCell = document.querySelector(`[data-index="${data.computerIndex}"]`);
-                            if (computerCell) {
-                                const computerSpan = computerCell.querySelector('span');
-                                if (computerSpan) {
-                                    computerSpan.innerHTML = data.computerSymbol;
-                                    computerSpan.style.color = '#0000ff';
-                                }
-                            }
+                            computerCell.querySelector('span').innerHTML = data.computerSymbol;
+                            computerCell.querySelector('span').style.color = '#0000ff';
                         }
 
+                        // Handle game over
                         if (data.isGameOver) {
-                            const gameStatus = document.getElementById('game-status');
-                            if (gameStatus) gameStatus.innerHTML = data.winnerMessage;
-
+                            document.getElementById('game-status').innerHTML = data.winnerMessage;
                             if (data.winningCombination) {
                                 data.winningCombination.forEach(index => {
-                                    const winCell = document.querySelector(`[data-index="${index}"]`);
-                                    if (winCell) winCell.classList.add('win');
+                                    document.querySelector(`[data-index="${index}"]`).classList.add('win');
                                 });
                             }
                         }
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Move error: ' + error.message);
-                });
-        }
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Move error: ' + error.message);
+            });
+    }
 </script>
 }

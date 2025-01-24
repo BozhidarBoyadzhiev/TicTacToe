@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe.Services.Computer.Contracts;
 
-public class GameState
+public class ComputerGameState
 {
     public string[] Board { get; set; } = new string[9];
     public string PlayerName { get; set; }

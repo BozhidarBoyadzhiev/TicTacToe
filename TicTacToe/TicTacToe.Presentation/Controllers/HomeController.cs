@@ -12,12 +12,6 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpGet("multiplayer")]
-    public IActionResult Multiplayer()
-    {
-        return View();
-    }
-
     [HttpGet("leaderboard")]
     public IActionResult Leaderboard()
     {

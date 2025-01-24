@@ -10,19 +10,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6eef63f3-f72b-4727-8452-367b35e1fb88" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Models/GameSettings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Models/MoveRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TicTacToe.Services/Computer/Contracts/GameState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Controllers/MultiplayerController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Models/MultiplayerSettings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Multiplayer/Multiplayer.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TicTacToe.Services/Multiplayer/Contracts/IMultiplayerService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TicTacToe.Services/Multiplayer/Contracts/MultiplayerGameState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TicTacToe.Services/Multiplayer/MultiplayerService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TicTacToe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TicTacToe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Controllers/ComputerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Controllers/ComputerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Controllers/HomeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Models/GameSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Models/ComputerGameSettings.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/TicTacToe.Presentation.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/TicTacToe.Presentation.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Computer/Computer.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Computer/Computer.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Home/Multiplayer.cshtml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToe.Presentation/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Presentation/wwwroot/css/site.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicTacToe.Services/Computer/ComputerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Services/Computer/ComputerService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToe.Services/Computer/Contracts/GameStateDto.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToe.Services/Computer/Contracts/GameState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Services/Computer/Contracts/ComputerGameState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TicTacToe.Services/Computer/Contracts/IComputerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Services/Computer/Contracts/IComputerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TicTacToe.Services/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToe.Services/DependencyInjection.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +113,7 @@
       <option name="presentableId" value="Default" />
       <updated>1737628157160</updated>
       <workItem from="1737628158237" duration="9135000" />
-      <workItem from="1737710691261" duration="5624000" />
+      <workItem from="1737710691261" duration="11265000" />
     </task>
     <servers />
   </component>

@@ -23,7 +23,7 @@ public class ComputerController : Controller
     }
 
     [HttpPost("NewGame")]
-    public IActionResult NewGame([FromBody] GameSettings settings)
+    public IActionResult NewGame([FromBody] ComputerGameSettings settings)
     {
         try
         {
@@ -33,13 +33,13 @@ public class ComputerController : Controller
                 settings.PlayerSymbol
             );
         
-            HttpContext.Session.SetString("GameState", JsonSerializer.Serialize(gameState));
+            HttpContext.Session.SetString("ComputerGameState", JsonSerializer.Serialize(gameState));
             
             int? computerFirstMove = null;
             if (gameState.PlayerSymbol == "O")
             {
                 computerFirstMove = this.computerService.MakeInitialComputerMove(gameState);
-                HttpContext.Session.SetString("GameState", JsonSerializer.Serialize(gameState));
+                HttpContext.Session.SetString("ComputerGameState", JsonSerializer.Serialize(gameState));
             }
 
             return Json(new { 
@@ -54,19 +54,20 @@ public class ComputerController : Controller
         }
     }
 
+    
     [HttpPost("MakeMove")]
     public IActionResult MakeMove([FromBody] MoveRequest request)
     {
         try
         {
-            var gameStateJson = HttpContext.Session.GetString("GameState");
+            var gameStateJson = HttpContext.Session.GetString("ComputerGameState");
             if (string.IsNullOrEmpty(gameStateJson))
                 return BadRequest(new { error = "Game not started" });
 
-            var gameState = JsonSerializer.Deserialize<GameState>(gameStateJson);
+            var gameState = JsonSerializer.Deserialize<ComputerGameState>(gameStateJson);
             var result = this.computerService.ProcessMove(gameState, request.CellIndex);
         
-            HttpContext.Session.SetString("GameState", JsonSerializer.Serialize(gameState));
+            HttpContext.Session.SetString("ComputerGameState", JsonSerializer.Serialize(gameState));
 
             return Json(new
             {
