@@ -1,0 +1,13 @@
+﻿<script>
+    function resetBoard() {
+        document.querySelectorAll('.cell').forEach(cell => {
+            const span = cell.querySelector('span');
+            if (span) {
+                span.innerHTML = '';
+                span.style.color = '';
+            }
+            cell.classList.remove('win');
+        });
+        document.getElementById('game-status').innerHTML = '';
+    }
+</script>

@@ -1,0 +1,36 @@
+﻿<script>
+    function startNewGame() {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('settingsModal'));
+        modal.hide();
+
+        const playerName = document.getElementById('playerName').value;
+        const playerColor = document.getElementById('playerColor').value;
+        const playerSymbol = document.getElementById('playerSymbol').value;
+
+        // Reset board visually
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.querySelector('span').innerHTML = '';
+            cell.classList.remove('win');
+        });
+
+        fetch('/Computer/NewGame', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                playerName,
+                playerColor,
+                playerSymbol
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle computer's first move if player chose O
+                if (data.computerFirstMove !== null) {
+                    const computerCell = document.querySelector(`[data-index="${data.computerFirstMove}"]`);
+                    computerCell.querySelector('span').innerHTML = data.computerSymbol;
+                    computerCell.querySelector('span').style.color = '#0000ff';
+                }
+                document.getElementById('game-status').innerHTML = 'Game started!';
+            });
+    }
+</script>

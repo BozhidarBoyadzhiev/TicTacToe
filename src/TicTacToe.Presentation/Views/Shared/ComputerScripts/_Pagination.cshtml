@@ -1,0 +1,20 @@
+﻿<script>
+    function getResultClass(result) {
+        return {
+            'Win': 'bg-success',
+            'Loss': 'bg-danger',
+            'Draw': 'bg-warning text-dark'
+        }[result] || 'bg-secondary';
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => loadHistory(1));
+
+    function previousPage() {
+        if (currentPage > 1) loadHistory(currentPage - 1);
+    }
+
+    function nextPage() {
+        if (currentPage < totalPages) loadHistory(currentPage + 1);
+    }
+</script>

@@ -1,0 +1,40 @@
+﻿<script>
+    function makeMove(cell) {
+        const index = cell.getAttribute('data-index');
+
+        fetch('/Computer/MakeMove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cellIndex: parseInt(index) })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isValid) {
+                    // Update player's move
+                    cell.querySelector('span').innerHTML = data.playerSymbol;
+                    cell.querySelector('span').style.color = data.playerColor;
+
+                    // Update computer's move
+                    if (data.computerIndex !== null) {
+                        const computerCell = document.querySelector(`[data-index="${data.computerIndex}"]`);
+                        computerCell.querySelector('span').innerHTML = data.computerSymbol;
+                        computerCell.querySelector('span').style.color = '#0000ff';
+                    }
+
+                    // Handle game over
+                    if (data.isGameOver) {
+                        document.getElementById('game-status').innerHTML = data.winnerMessage;
+                        if (data.winningCombination) {
+                            data.winningCombination.forEach(index => {
+                                document.querySelector(`[data-index="${index}"]`).classList.add('win');
+                            });
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Move error: ' + error.message);
+            });
+    }
+</script>

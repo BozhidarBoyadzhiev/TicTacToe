@@ -1,0 +1,43 @@
+﻿<script>
+    function loadHistory(page) {
+        if (page < 1 || page > totalPages) return;
+
+        fetch(`/Computer/GetHistory?page=${page}&pageSize=${pageSize}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                currentPage = page;
+                totalPages = data.totalPages;
+
+                // Update table
+                const tbody = document.getElementById('history-body');
+                tbody.innerHTML = data.games.map(game => `
+                        <tr>
+                            <td>${new Date(game.date).toLocaleString()}</td>
+                            <td>${game.playerName}</td>
+                            <td>
+                                <span class="color-box" 
+                                      style="background-color: ${game.playerColor}"></span>
+                                ${game.playerColor}
+                            </td>
+                            <td>
+                                <span class="badge ${getResultClass(game.result)}">
+                                    ${game.result}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+
+                // Update pagination controls
+                document.getElementById('current-page').textContent = `Page ${currentPage} of ${totalPages}`;
+                document.getElementById('prev-page').disabled = currentPage === 1;
+                document.getElementById('next-page').disabled = currentPage === totalPages;
+            })
+            .catch(error => {
+                console.error('Error loading history:', error);
+                alert('Error loading game history');
+            });
+    }
+</script>
