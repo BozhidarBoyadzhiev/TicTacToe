@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using TicTacToe.Presentation.Models;
 using TicTacToe.Services.Computer.Contracts;
 
 namespace TicTacToe.Presentation.Controllers;
 
+[Route("[controller]")]
 public class ComputerController : Controller
 {
     private readonly IComputerService computerService;
@@ -12,17 +17,72 @@ public class ComputerController : Controller
         this.computerService = computerService;
     }
 
-    [HttpGet("computer")]
     public IActionResult Computer()
     {
-        var gameState = this.computerService.InitializeGame();
-        return View(gameState);
+        return View();
     }
-    
-    [HttpPost("computer/move")]
-    public IActionResult PlayerMove([FromBody] GameStateDto gameState)
+
+    [HttpPost("NewGame")]
+    public IActionResult NewGame([FromBody] GameSettings settings)
     {
-        var updatedState = this.computerService.ProcessPlayerMove(gameState);
-        return Json(updatedState);
+        try
+        {
+            var gameState = this.computerService.StartNewGame(
+                settings.PlayerName, 
+                settings.PlayerColor,
+                settings.PlayerSymbol
+            );
+        
+            HttpContext.Session.SetString("GameState", JsonSerializer.Serialize(gameState));
+            
+            int? computerFirstMove = null;
+            if (gameState.PlayerSymbol == "O")
+            {
+                computerFirstMove = this.computerService.MakeInitialComputerMove(gameState);
+                HttpContext.Session.SetString("GameState", JsonSerializer.Serialize(gameState));
+            }
+
+            return Json(new { 
+                success = true,
+                computerFirstMove,
+                computerSymbol = gameState.ComputerSymbol
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [HttpPost("MakeMove")]
+    public IActionResult MakeMove([FromBody] MoveRequest request)
+    {
+        try
+        {
+            var gameStateJson = HttpContext.Session.GetString("GameState");
+            if (string.IsNullOrEmpty(gameStateJson))
+                return BadRequest(new { error = "Game not started" });
+
+            var gameState = JsonSerializer.Deserialize<GameState>(gameStateJson);
+            var result = this.computerService.ProcessMove(gameState, request.CellIndex);
+        
+            HttpContext.Session.SetString("GameState", JsonSerializer.Serialize(gameState));
+
+            return Json(new
+            {
+                isValid = result.isValid,
+                isGameOver = result.isGameOver,
+                winnerMessage = result.winnerMessage,
+                computerIndex = result.computerIndex,
+                playerSymbol = gameState.PlayerSymbol,
+                computerSymbol = gameState.ComputerSymbol,
+                playerColor = gameState.PlayerColor,
+                winningCombination = result.winningCombination
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 }

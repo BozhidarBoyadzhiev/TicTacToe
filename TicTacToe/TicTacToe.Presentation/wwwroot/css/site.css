@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.cell.win {
+  background-color: #90EE90;
+}
+.modal-content {
+  padding: 20px;
+}
+.form-select {
+  margin-bottom: 1rem;
+}
