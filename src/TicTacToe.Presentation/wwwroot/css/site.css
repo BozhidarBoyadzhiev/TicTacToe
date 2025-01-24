@@ -55,3 +55,21 @@ body {
   vertical-align: middle;
   margin-right: 5px;
 }
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+.table {
+  font-size: 0.9rem;
+}
+.table th, .table td {
+  vertical-align: middle;
+  text-align: center;
+}
+.btn {
+  border-radius: 5px;
+}
+.row {
+  display: flex;
+}

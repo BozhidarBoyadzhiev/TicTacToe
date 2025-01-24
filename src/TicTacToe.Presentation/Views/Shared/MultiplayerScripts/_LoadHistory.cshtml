@@ -1,0 +1,52 @@
+﻿<script>
+    let mpCurrentPage = 1;
+    const mpPageSize = 10;
+    let mpTotalPages = 1;
+
+    function loadMultiplayerHistory(page) {
+        if (page < 1 || page > mpTotalPages) return;
+
+        fetch(`/Multiplayer/GetHistory?page=${page}&pageSize=${mpPageSize}`)
+            .then(response => response.json())
+            .then(data => {
+                mpCurrentPage = page;
+                mpTotalPages = data.totalPages;
+
+                const tbody = document.getElementById('multiplayer-history-body');
+                tbody.innerHTML = data.games.map(game => `
+                    <tr>
+                        <td>${new Date(game.date).toLocaleString()}</td>
+                        <td>
+                            <span class="color-swatch" style="background-color: ${game.player1Color}"></span>
+                            ${game.player1Name}
+                        </td>
+                        <td>
+                            <span class="color-swatch" style="background-color: ${game.player2Color}"></span>
+                            ${game.player2Name}
+                        </td>
+                        <td>
+                            <span class="badge ${getMultiplayerResultClass(game.result)}">
+                                ${game.result}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+
+                document.getElementById('mp-current-page').textContent = `Page ${mpCurrentPage} of ${mpTotalPages}`;
+                document.getElementById('mp-prev-page').disabled = mpCurrentPage === 1;
+                document.getElementById('mp-next-page').disabled = mpCurrentPage === mpTotalPages;
+            })
+            .catch(error => {
+                console.error('Error loading history:', error);
+                alert('Error loading game history');
+            });
+    }
+
+    function getMultiplayerResultClass(result) {
+        return {
+            'Player1 Win': 'bg-success',
+            'Player2 Win': 'bg-danger',
+            'Draw': 'bg-warning text-dark'
+        }[result] || 'bg-secondary';
+    }
+</script>

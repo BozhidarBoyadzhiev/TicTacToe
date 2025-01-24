@@ -1,0 +1,37 @@
+﻿<script>
+    function makeMultiplayerMove(cell) {
+        const index = cell.getAttribute('data-index');
+
+        fetch('/Multiplayer/MakeMove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cellIndex: parseInt(index) })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isValid) {
+                    const span = cell.querySelector('span');
+                    span.textContent = data.playedSymbol;
+                    span.style.color = data.playedColor; // Use the returned playedColor
+
+                    if (data.isGameOver) {
+                        document.getElementById('game-status').textContent = data.message;
+                        document.getElementById('game-status').style.color = '#000000';
+                        if (data.combination) {
+                            data.combination.forEach(idx => {
+                                document.querySelector(`[data-index="${idx}"]`).classList.add('win');
+                            });
+                        }
+                    } else {
+                        updateGameStatus(
+                            `${data.currentSymbol === 'X'
+                                ? document.getElementById('player1Name').value
+                                : document.getElementById('player2Name').value}'s turn (${data.currentSymbol})`,
+                            data.currentColor
+                        );
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>

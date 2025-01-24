@@ -1,0 +1,25 @@
+﻿<div class="modal fade" id="multiplayerSettings" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Multiplayer Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Player 1 Name</label>
+                    <input type="text" id="player1Name" class="form-control" required>
+                    <input type="color" id="player1Color" class="form-control mt-2" value="#ff0000">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Player 2 Name</label>
+                    <input type="text" id="player2Name" class="form-control" required>
+                    <input type="color" id="player2Color" class="form-control mt-2" value="#0000ff">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="startMultiplayerGame()">Start Game</button>
+            </div>
+        </div>
+    </div>
+</div>

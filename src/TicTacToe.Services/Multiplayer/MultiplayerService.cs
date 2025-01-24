@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using TicTacToe.Services.Multiplayer.Contracts;
+using TicTacToe.Services.Multiplayer.Contracts.Models;
 
 namespace TicTacToe.Services.Multiplayer;
 

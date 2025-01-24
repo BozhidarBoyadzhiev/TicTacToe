@@ -1,6 +1,6 @@
-﻿namespace TicTacToe.Services.Computer.Contracts.Models;
+﻿namespace TicTacToe.Services.Multiplayer.Contracts.Models;
 
-public class PlayerStats
+public class PlayerPairStats
 {
     public string PlayerName { get; set; }
     public string PlayerColor { get; set; }
@@ -8,6 +8,5 @@ public class PlayerStats
     public int Losses { get; set; }
     public int Draws { get; set; }
     public int TotalGames { get; set; }
-    public double WinPercentage {get; set;}
-    public double Score { get; set; }
+    public double WinPercentage { get; set; }
 }

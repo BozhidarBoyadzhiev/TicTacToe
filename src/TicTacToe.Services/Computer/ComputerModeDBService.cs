@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TicTacToe.Data;
-using TicTacToe.Presentation.Models;
 using TicTacToe.Services.Computer.Contracts;
+using TicTacToe.Services.Computer.Contracts.Models;
 
 namespace TicTacToe.Services.Computer;
 

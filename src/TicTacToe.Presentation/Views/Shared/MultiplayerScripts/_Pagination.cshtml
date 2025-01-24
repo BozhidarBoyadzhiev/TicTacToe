@@ -1,0 +1,12 @@
+﻿<script>
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => loadMultiplayerHistory(1));
+
+    function mpPreviousPage() {
+        if (mpCurrentPage > 1) loadMultiplayerHistory(mpCurrentPage - 1);
+    }
+
+    function mpNextPage() {
+        if (mpCurrentPage < mpTotalPages) loadMultiplayerHistory(mpCurrentPage + 1);
+    }
+</script>

@@ -1,4 +1,4 @@
-﻿namespace TicTacToe.Services.Multiplayer.Contracts;
+﻿namespace TicTacToe.Services.Multiplayer.Contracts.Models;
 
 public interface IMultiplayerService
 {

@@ -1,0 +1,9 @@
+﻿<script>
+    function resetBoard() {
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.querySelector('span').textContent = '';
+            cell.classList.remove('win');
+        });
+        document.getElementById('game-status').textContent = '';
+    }
+</script>

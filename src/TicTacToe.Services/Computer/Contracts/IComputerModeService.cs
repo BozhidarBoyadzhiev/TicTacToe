@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using TicTacToe.Data;
-using TicTacToe.Presentation.Models;
+using TicTacToe.Services.Computer.Contracts.Models;
 
 namespace TicTacToe.Services.Computer.Contracts;
 
