@@ -15,15 +15,10 @@
                 const tbody = document.getElementById('history-body');
                 tbody.innerHTML = data.games.map(game => `
                         <tr>
-                            <td>${new Date(game.date).toLocaleString()}</td>
-                            <td>${game.playerName}</td>
+                            <td class="fs-6">${new Date(game.date).toLocaleString()}</td>
+                            <td><span class="badge fs-6" style="background-color:${game.playerColor}">${game.playerName}</span></td>
                             <td>
-                                <span class="color-box" 
-                                      style="background-color: ${game.playerColor}"></span>
-                                ${game.playerColor}
-                            </td>
-                            <td>
-                                <span class="badge ${getResultClass(game.result)}">
+                                <span class="badge fs-6 ${getResultClass(game.result)}">
                                     ${game.result}
                                 </span>
                             </td>

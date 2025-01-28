@@ -15,17 +15,19 @@
                 const tbody = document.getElementById('multiplayer-history-body');
                 tbody.innerHTML = data.games.map(game => `
                     <tr>
-                        <td>${new Date(game.date).toLocaleString()}</td>
+                        <td class="fs-6">${new Date(game.date).toLocaleString()}</td>
                         <td>
-                            <span class="color-swatch" style="background-color: ${game.player1Color}"></span>
-                            ${game.player1Name}
+                            <span class="badge fs-6" style="background-color: ${game.player1Color}">
+                                ${game.player1Name}
+                            </span>
                         </td>
                         <td>
-                            <span class="color-swatch" style="background-color: ${game.player2Color}"></span>
-                            ${game.player2Name}
+                            <span class="badge fs-6" style="background-color: ${game.player2Color}">
+                                ${game.player2Name}
+                            </span>  
                         </td>
                         <td>
-                            <span class="badge ${getMultiplayerResultClass(game.result)}">
+                            <span class="badge fs-6 ${getMultiplayerResultClass(game.result)}">
                                 ${game.result}
                             </span>
                         </td>
