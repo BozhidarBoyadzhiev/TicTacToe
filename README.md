@@ -32,7 +32,7 @@ Welcome to the **Tic-Tac-Toe** game! This project is built with ASP.NET Core, of
 
 - **Frontend:** Razor Pages, HTML, CSS
 - **Backend:** ASP.NET Core MVC
-- **Database:** SQLite (for leaderboard)
+- **Database:** SQL Server (for leaderboard)
 - **Languages:** C#, JavaScript
 
 ## 📸 Screenshots
@@ -41,28 +41,12 @@ Welcome to the **Tic-Tac-Toe** game! This project is built with ASP.NET Core, of
 |-------------|------------|-------------|
 | ![Home Screen](imgs/home.png) | ![Game Board](imgs/game.png) | ![Leaderboard](imgs/leaderboard.png) |
 
-## ⚙️ Installation
+## ⚙️ Local Setup
 
-Follow these steps to run the game locally:
-
-1. **Clone the repository:**
+1. **Clone the repository to run locally:**
    ```bash
-   git clone https://github.com/your-repo/tictactoe-aspnetcore.git
+   git clone https://github.com/BozhidarBoyadzhiev/TicTacToe.git
    ```
-2. **Navigate to the project folder:**
-   ```bash
-   cd tictactoe-aspnetcore
-   ```
-3. **Restore dependencies:**
-   ```bash
-   dotnet restore
-   ```
-4. **Run the application:**
-   ```bash
-   dotnet run
-   ```
-5. **Open in your browser:**
-   Go to `http://localhost:5000` to start playing!
 ---
 
 Enjoy playing Tic-Tac-Toe! If you encounter any issues or have suggestions, feel free to open an issue in the repository. Happy gaming! 🎉
